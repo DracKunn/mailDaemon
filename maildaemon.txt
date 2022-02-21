@@ -1,0 +1,77 @@
+// the aim of the program is to "read" a list of emails, identify key-words, and forward emails based on those key-words. The program should count the number of mails processed per session as well as per day. It should also track how many mails it forwards to each forwarding adress.
+
+
+// I'll break it down into it's parts first and assemble the parts afterwards.
+
+// 1. selecting an email from the list (by creating a list of objects, each object being an email and it's heading)
+
+The list of emails is a dataset containting:
+- The sender's email adress
+- the heading text
+- the body text
+
+We need to create an array containing objects that each have the sender's email, the heading text and the body text of each email.
+
+// the array should look like this:
+
+var arrray emails[]
+var object email{sender, heading, body}
+
+emails = [
+    email {
+        sender: "sender email adress",
+        heading: "heading text body as a string",
+        body: "email text body as a string"
+        }
+]
+
+// 2. selecting the heading text and selecting the body text
+//AND
+// 3. cutting the text variables into arrays of single word strings (we can use something like .split() to create a list / an array of strings)
+
+define text as a string variables
+then add both the heading and the body of the email 
+(we could make all the words lowercased to help ourselves later)
+
+var string text
+var array words[]
+
+for (i=0, emails[].length, i++){
+    text = emails[i].email{heading} + emails[i].email{body};
+    words[] = text.split();
+}
+
+
+// 4. comparing the strings in the arrays with the target words for each of the 4 forwarding adresses. 
+//  A: "CV" => “recruitment@parkshark.com” 
+//  B: “Promo” OR “advertising” => “spam@parkshark.com” 
+//  C: “proposal” => “sales@parkshark.com”
+//  D: all other cases => “reception@parkshark.com ” 
+
+Now within the first loop we want to create a second loop to check each word in de words[] array. We'll have to define the forwarding function first, but I'll do it in step 5.
+
+for (j=0, words[].length, j++){
+    if (words[j] === "CV" OR words[j] === "cv"){
+        Forward(emails[i], “recruitment@parkshark.com”);
+    } else if (words[j]=== "Promo" OR words[j] === "promo" OR words[j] === "Advertising" OR words[j] === "advertising") {
+        Forward(emails[i], “spam@parkshark.com”);
+    } else if (words[j] === "Proposal" OR words[j] === "proposal"){
+        Forward(emails[i], “sales@parkshark.com”);
+    } else {
+        Forward(emails[i], “reception@parkshark.com”);
+    }
+}
+
+
+// 5. forwarding the email to the correct adress.
+
+var Forward = function(email{}, forwardingAddress){
+    send 
+}
+
+
+// 6. Deleting the e-mail.
+
+// 7. counting how many mails are processed in the list as well as over all lists in a day.
+
+// 8. counting how many emails are sent to each adress per list and per day.
