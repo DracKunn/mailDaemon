@@ -1,4 +1,4 @@
-// the aim of the program is to "read" a list of emails, identify key-words, and forward emails based on those key-words. The program should count the number of mails processed per session as well as per day. It should also track how many mails it forwards to each forwarding adress.
+// the aim of the program is to "read" a list of emails, identify key-words, and forward emails based on those key-words. The program should count the number of mails processed per session as well as per day. It should also track how many mails it forwards to each forwarding address.
 
 ///////////////////////////
 // A step by step list of things the program needs
@@ -8,28 +8,24 @@
 // 2. selecting an email from the list
 // 3. selecting the heading text and selecting the body text from the email.
 // 4. reading the text from the email.
-// 5. comparing the words in the email to the target words for each of the 4 forwarding adresses. 
-// 6. forwarding the email to the correct adress.
+// 5. comparing the words in the email to the target words for each of the 4 forwarding addresses. 
+// 6. forwarding the email to the correct address.
 // 7. Deleting the e-mail.
 // 8. counting and displaying the number of mails that are processed in the list and where they were forwarded to.
-// 9. Storing and adding the number of mails processed and the number for each forwarding adress to track the numbers for a full day. 
+// 9. Storing and adding the number of mails processed and the number for each forwarding address to track the numbers for a full day. 
 
 ///////////////////////////
 // Psuedocode Program 
 ///////////////////////////
 
 // Defining Variables
-
 EMAILS[] // this is an array that exists and contains the list of emails. Each email is an object EMAIL containing SENDER, SUBJECT and BODY.
-
-SENDER // this is a string variable that exists containing the email adress of the sender.
+SENDER // this is a string variable that exists containing the email address of the sender.
 SUBJECT // this is a string variable that exists containing the text in the subject of the email.
-BODY // this is a string variable taht exists containing the text in the body of the email.
-
+BODY // this is a string variable that exists containing the text in the body of the email.
 EMAIL{SENDER,HEADING,BODY} // this is an object that exists containing the variables SENDER, SUBJECT and BODY.  
 
 TEXT = "" // this is a string variable 
-
 FORWARDED = False // a boolean variable used in the logic loop to forward emails
 
 NUMBERMAILS = 0 //these are all integer variables
@@ -45,7 +41,6 @@ DAILYSALES = 0
 DAILYRECEPTION = 0 
 
 //Defining Functions
-
 Function lowercase
     Pass In: STRING
     turn all characters in the STRING to lowercase.
@@ -101,17 +96,12 @@ Function display daily mails
     Pass Out: nothing
 Endfunction
 
-// The Big Function
-
+// The Mail Sorting Function
 Function mail daemon
     Pass In: EMAILS[] // this function receives a list of emails
-
     loop I from 0 to EMAILS.length
-
         TEXT = EMAILS[I].EMAIL{SUBJECT} + EMAILS[I].EMAIL{BODY} // we make the email subject and body into one string variable.
-        
         FORWARDED = False
-
         NUMBERMAILS = NUMBERMAILS + 1 //can be written as NUMBERMAILS ++ or NUMBERMAILS += 1
 
         if Call: compare (TEXT, "cv") then
@@ -128,10 +118,8 @@ Function mail daemon
             Call: count emails (RECEPTION)
         end if
 
-        Call: delete email (EMAILs[I]) 
-
+        Call: delete email (EMAILS[I]) 
     end loop
-    
     Call: display mails //this will show the number of mails processed in the list
     
     DAILYMAILS = DAILYMAILS + NUMBERMAILS 
@@ -145,14 +133,7 @@ Function mail daemon
     Pass Out: DAILYSPAM
     Pass Out: DAILYSALES
     Pass Out: DAILYRECEPTION
-
 Endfunction
-
-// Calling the main function on a list
-
-Call: mail daemon (EMAILS[])
-
-// Displaying the total tally at the end of the day
-
-Call: display daily mails
+Call: mail daemon (EMAILS[]) // Calling the main function on a list
+Call: display daily mails // Displaying the total tally at the end of the day
 
