@@ -1,0 +1,153 @@
+// the aim of the program is to "read" a list of emails, identify key-words, and forward emails based on those key-words. The program should count the number of mails processed per session as well as per day. It should also track how many mails it forwards to each forwarding adress.
+
+///////////////////////////
+// A step by step list of things the program needs
+///////////////////////////
+
+// 1. Receiving a list of emails.
+// 2. selecting an email from the list
+// 3. selecting the heading text and selecting the body text from the email.
+// 4. reading the text from the email.
+// 5. comparing the words in the email to the target words for each of the 4 forwarding adresses. 
+// 6. forwarding the email to the correct adress.
+// 7. Deleting the e-mail.
+// 8. counting and displaying the number of mails that are processed in the list and where they were forwarded to.
+// 9. Storing and adding the number of mails processed and the number for each forwarding adress to track the numbers for a full day. 
+
+///////////////////////////
+// Psuedocode Program 
+///////////////////////////
+
+// Defining Variables
+
+EMAILS[] // this is an array that exists and contains the list of emails. Each email is an object EMAIL containing SENDER, SUBJECT and BODY.
+
+SENDER // this is a string variable that exists containing the email adress of the sender.
+SUBJECT // this is a string variable that exists containing the text in the subject of the email.
+BODY // this is a string variable taht exists containing the text in the body of the email.
+
+EMAIL{SENDER,HEADING,BODY} // this is an object that exists containing the variables SENDER, SUBJECT and BODY.  
+
+TEXT = "" // this is a string variable 
+
+NUMBERMAILS = 0 //these are all integer variables
+RECRUITMENT = 0 
+SPAM = 0 
+SALES = 0 
+RECEPTION = 0 
+
+DAILYMAILS = 0 
+DAILYRECRUITMENT = 0 
+DAILYSPAM = 0 
+DAILYSALES = 0 
+DAILYRECEPTION = 0 
+
+//Defining Functions
+
+Function lowercase
+    Pass In: STRING
+    turn all characters in the STRING to lowercase.
+    Pass Out: STRING
+Endfunction
+
+Function compare
+    Pass In: STRING
+    Pass In: KEYWORD
+    Call: lowercase (STRING)
+    Call: lowercase (KEYWORD)
+    compare each word in the STRING to the KEYWORD
+    Pass Out: True if a match, False if no match.
+Endfunction
+
+Function forward email
+    Pass In: EMAIL{}
+    Pass In: FORWARDINGADDRESS //forwarding address will change depending on key words later.
+    send the EMAIL{} to the address in FORWARDINGADDRESS
+    Pass Out: nothing
+Endfunction
+
+Function delete email
+    Pass In: EMAIL{}
+    delete the email from the list.
+    Pass Out: nothing
+Endfunction
+
+Function count emails
+    Pass In: RECIPIENT //recipient will change depending on keywords later
+    RECIPIENT = RECIPIENT + 1
+    Pass Out: RECIPIENT
+Endfunction
+
+Function display mails
+    Pass In: nothing
+    print "We have sorted ", NUMBERMAILS, " mails:"
+    print "       ", RECRUITMENT, " to recruitment"
+    print "       ", SPAM, " to spam"
+    print "       ", SALES, " to sales"
+    print "       ", RECEPTION, " to reception"
+    Pass Out: nothing
+Endfunction
+
+Function display daily mails
+    Pass In: nothing
+    print "We have sorted ", DAILYMAILS, " mails today:"
+    print "       ", DAILYRECRUITMENT, " to recruitment"
+    print "       ", DAILYSPAM, " to spam"
+    print "       ", DAILYSALES, " to sales"
+    print "       ", DAILYRECEPTION, " to reception"
+    Pass Out: nothing
+Endfunction
+
+// The Big Function
+
+Function mail daemon
+    Pass In: EMAILS[] // this function receives a list of emails
+
+    loop I from 0 to EMAILS.length
+
+        TEXT = EMAILS[I].EMAIL{SUBJECT} + EMAILS[I].EMAIL{BODY} // we make the email subject and body into one string variable.
+
+        if Call: compare (TEXT, "cv") then
+            Call: forward email (EMAILS[I], “recruitment@parkshark.com”)
+            Call: count emails (RECRUITMENT)
+        else if ( Call: compare (TEXT, "promo") OR Call: compare (TEXT, "advertising")) then
+            Call: forward email (EMAILS[I], “spam@parkshark.com”)
+            Call: count emails (SPAM)
+        else if Call: compare (TEXT, "proposal") then
+            Call: forward email (EMAILS[I], “sales@parkshark.com”)
+            Call: count emails (SALES)
+        else
+            Call: forward email (EMAILS[I], “reception@parkshark.com”)
+            Call: count emails (RECEPTION)
+        end if
+
+        NUMBERMAILS = NUMBERMAILS + 1
+
+        Call: delete email (EMAILs[I]) 
+
+    end loop
+    
+    Call: display mails //this will show the number of mails processed in the list
+    
+    DAILYMAILS = DAILYMAILS + NUMBERMAILS
+    DAILYRECRUITMENT = DAILYRECRUITMENT + RECRUITMENT
+    DAILYSPAM = DAILYSPAM + SPAM
+    DAILYSALES = DAILYSALES + SALES
+    DAILYRECEPTION = DAILYRECEPTION + RECEPTION
+    
+    Pass Out: DAILYMAILS
+    Pass Out: DAILYRECRUITMENT
+    Pass Out: DAILYSPAM
+    Pass Out: DAILYSALES
+    Pass Out: DAILYRECEPTION
+
+Endfunction
+
+// Calling the main function on a list
+
+Call: mail daemon (EMAILS[])
+
+// Displaying the total tally at the end of the day
+
+Call: display daily mails
+
