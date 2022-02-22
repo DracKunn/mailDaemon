@@ -30,6 +30,8 @@ EMAIL{SENDER,HEADING,BODY} // this is an object that exists containing the varia
 
 TEXT = "" // this is a string variable 
 
+FORWARDED = False // a boolean variable used in the logic loop to forward emails
+
 NUMBERMAILS = 0 //these are all integer variables
 RECRUITMENT = 0 
 SPAM = 0 
@@ -63,7 +65,8 @@ Function forward email
     Pass In: EMAIL{}
     Pass In: FORWARDINGADDRESS //forwarding address will change depending on key words later.
     send the EMAIL{} to the address in FORWARDINGADDRESS
-    Pass Out: nothing
+    FORWARDED = True
+    Pass Out: FORWARDED
 Endfunction
 
 Function delete email
@@ -106,22 +109,24 @@ Function mail daemon
     loop I from 0 to EMAILS.length
 
         TEXT = EMAILS[I].EMAIL{SUBJECT} + EMAILS[I].EMAIL{BODY} // we make the email subject and body into one string variable.
+        
+        FORWARDED = False
+
+        NUMBERMAILS = NUMBERMAILS + 1 //can be written as NUMBERMAILS ++ or NUMBERMAILS += 1
 
         if Call: compare (TEXT, "cv") then
             Call: forward email (EMAILS[I], “recruitment@parkshark.com”)
-            Call: count emails (RECRUITMENT)
-        else if ( Call: compare (TEXT, "promo") OR Call: compare (TEXT, "advertising")) then
+            Call: count emails (RECRUITMENT) 
+        if ( Call: compare (TEXT, "promo") OR Call: compare (TEXT, "advertising")) then
             Call: forward email (EMAILS[I], “spam@parkshark.com”)
-            Call: count emails (SPAM)
-        else if Call: compare (TEXT, "proposal") then
+            Call: count emails (SPAM)            
+        if Call: compare (TEXT, "proposal") then
             Call: forward email (EMAILS[I], “sales@parkshark.com”)
-            Call: count emails (SALES)
-        else
+            Call: count emails (SALES)                        
+        if NOT FORWARDED //If forwarded = False, also if !FORWARDED
             Call: forward email (EMAILS[I], “reception@parkshark.com”)
             Call: count emails (RECEPTION)
         end if
-
-        NUMBERMAILS = NUMBERMAILS + 1
 
         Call: delete email (EMAILs[I]) 
 
@@ -129,7 +134,7 @@ Function mail daemon
     
     Call: display mails //this will show the number of mails processed in the list
     
-    DAILYMAILS = DAILYMAILS + NUMBERMAILS
+    DAILYMAILS = DAILYMAILS + NUMBERMAILS 
     DAILYRECRUITMENT = DAILYRECRUITMENT + RECRUITMENT
     DAILYSPAM = DAILYSPAM + SPAM
     DAILYSALES = DAILYSALES + SALES
